@@ -34,7 +34,7 @@ public class ChangeCharset {
 
 	/**
 	 * 将字符编码转换成US-ASCII码
-	 **/
+	 */
 	public String toASCII(String str) throws UnsupportedEncodingException{
 		return this.changeCharset(str, US_ASCII);
 	}
