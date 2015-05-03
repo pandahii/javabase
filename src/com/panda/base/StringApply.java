@@ -1,5 +1,11 @@
 package com.panda.base;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import com.google.gson.Gson;
+
 /**
  * 描述：String 字符串的一些常规使用
  * 1.大小写变换！
@@ -69,7 +75,7 @@ public class StringApply {
 	//String -> int -> String
 	//String -> double -> String
 	//String -> date -> String
-	//String -> Ob -> String
+	//String -> Ob -> String 如json，这时使用到Gson这个包
 	public int string2Int(String str){
 		//使用之前str不为null，在此不做判断，如果str为null，那么程序将会抛出java.lang.NullPointerException异常
 		return Integer.parseInt(str);
@@ -79,12 +85,55 @@ public class StringApply {
 		//使用String.valueOf(xx);xx可以为null，那么转换的字符串为“null”，直接强制转换则可能会抛出不支持类型转换异常		
 		return String.valueOf(i);
 	}
+	public Date string2Date(String time){
+		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+		try {
+			return sf.parse(time);
+		} catch (ParseException e) {
+			System.out.println("转换的时间--"+time+"格式不正确，请确认：yyyy-MM-dd HH:mm:ss");
+			e.printStackTrace();
+		}
+		return null;
+	}
+	public String date2String(Date time){
+		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+		return sf.format(time);
+	}
+	public Tips string2Object(String json){
+		//json = "{"":"","":""}"
+		Gson gson = new Gson();
+		return gson.fromJson(json, Tips.class);
+	}
+	public String object2String(Tips s){
+		Gson gson = new Gson();
+		return gson.toJson(s);
+	}
 	public static void main(String[] args) { 
 		StringApply sa = new StringApply();
 //		System.out.println(sa.getStringExtension(null));
 //		System.out.println(sa.getStringUrlHead("https://localhost:8080/index.html"));
 //		System.out.println(sa.getStringMirror("1"));
+		System.out.println(sa.date2String(new Date()));
 	}
-	
+	class Tips{
+		private String status;
+		private String msg;
+		public String getStatus() {
+			return status;
+		}
+		public void setStatus(String status) {
+			this.status = status;
+		}
+		public String getMsg() {
+			return msg;
+		}
+		public void setMsg(String msg) {
+			this.msg = msg;
+		}
+		public void print(){
+			System.out.print("this Status :"+this.status+"\n"
+						   + "this Msg    :"+this.msg+"\n");
+		}
+	}
 	
 }
